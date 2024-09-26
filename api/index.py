@@ -1,11 +1,18 @@
-from flask import Flask
+# app.py
+
+import vercel_blob
+from flask import Flask, request, render_template, redirect
+import dotenv
+
 
 app = Flask(__name__)
+dotenv.load_dotenv()
+
 
 @app.route('/')
-def home():
-    return 'Hello, World!'
+def index():
+    resp = vercel_blob.list()
+    return render_template('index.html', files=resp.get('blobs'))
 
-@app.route('/about')
-def about():
-    return 'About'
+if __name__ == '__main__':
+    app.run()
